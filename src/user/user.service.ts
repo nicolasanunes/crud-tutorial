@@ -42,8 +42,15 @@ export class UserService {
     return checkId;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    const updatedUser = await this.userRepository.findOneBy({ id });
+
+    if (updatedUser === null)
+      throw new NotFoundException('O usuário não foi encontrado!');
+
+    Object.assign(updatedUser, updateUserDto as UserEntity);
+
+    return this.userRepository.save(updatedUser);
   }
 
   remove(id: number) {
