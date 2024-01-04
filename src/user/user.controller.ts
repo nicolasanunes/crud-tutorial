@@ -38,8 +38,10 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findUserById(@Param('id') id: number) {
+    const savedUserById = await this.userService.findUserById(id);
+
+    return savedUserById;
   }
 
   @Patch(':id')
