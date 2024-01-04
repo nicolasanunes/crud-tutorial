@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
+import { ListUserDto } from './dto/list-user.dto';
 
 @Injectable()
 export class UserService {
@@ -20,8 +21,14 @@ export class UserService {
     return this.userRepository.save(userEntity);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async listAllUsers() {
+    const savedUsers = await this.userRepository.find();
+
+    const listAllUsers = savedUsers.map(
+      (user) => new ListUserDto(user.id, user.name),
+    );
+
+    return listAllUsers;
   }
 
   findOne(id: number) {

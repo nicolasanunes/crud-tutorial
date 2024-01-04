@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
+import { ListUserDto } from './dto/list-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -24,14 +25,16 @@ export class UserController {
     const createdUser = await this.userService.createUser(createUserDto);
 
     return {
-      user: createdUser.name,
+      user: new ListUserDto(createdUser.id, createdUser.name),
       message: 'Usuário criado!',
     };
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async listAllUsers() {
+    const savedUsers = await this.userService.listAllUsers();
+
+    return savedUsers;
   }
 
   @Get(':id')

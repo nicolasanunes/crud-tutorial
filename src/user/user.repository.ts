@@ -8,4 +8,8 @@ export class UserRepository {
   async saveUser(user: UserEntity) {
     this.users.push(user);
   }
+
+  async listAllUsers() {
+    return this.users;
+  }
 }
